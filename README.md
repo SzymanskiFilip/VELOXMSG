@@ -1,3 +1,3 @@
 # VELOXMSG
 
-![schema](./markdown_data/image.png)
+![schema](markdown_data/image.png)
