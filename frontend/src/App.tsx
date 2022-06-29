@@ -3,10 +3,15 @@ import {Routes, Route} from "react-router-dom";
 import UserInterface from "./model/UserInterface";
 import {useState} from "react";
 import checkAuthentication from "./service/checkAuthentication";
+import RequireAuth from "./utils/RequireAuth";
+import {AuthContext} from "./context/AuthContext";
 
 function App() {
 
-    const [client, setClient] = useState<UserInterface>();
+    const [client, setClient] = useState<UserInterface>({
+        username: '',
+        authenticated: false
+    });
 
     useEffect(() => {
         console.log(checkAuthentication());
@@ -16,7 +21,11 @@ function App() {
   return (
     <Routes>
         <Route path="/" element={
-            <div>hello</div>
+            <AuthContext.Provider value={client}>
+                <RequireAuth>
+                    <div>hello</div>
+                </RequireAuth>
+            </AuthContext.Provider>
         }/>
     </Routes>
   );
