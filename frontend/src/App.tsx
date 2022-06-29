@@ -2,13 +2,15 @@ import React, {useEffect} from 'react';
 import {Routes, Route} from "react-router-dom";
 import UserInterface from "./model/UserInterface";
 import {useState} from "react";
+import checkAuthentication from "./service/checkAuthentication";
 
 function App() {
 
     const [client, setClient] = useState<UserInterface>();
 
     useEffect(() => {
-        //check if authenticated
+        console.log(checkAuthentication());
+        setClient(checkAuthentication());
     },[]);
 
   return (
