@@ -1,10 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {Routes, Route} from "react-router-dom";
+import UserInterface from "./model/UserInterface";
+import {useState} from "react";
 
 function App() {
+
+    const [client, setClient] = useState<UserInterface>();
+
+    useEffect(() => {
+        //check if authenticated
+    },[]);
+
   return (
-    <div>
-      <h1>Siema</h1>
-    </div>
+    <Routes>
+        <Route path="/" element={
+            <div>hello</div>
+        }/>
+    </Routes>
   );
 }
 
