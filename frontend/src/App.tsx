@@ -5,6 +5,9 @@ import {useState} from "react";
 import checkAuthentication from "./service/checkAuthentication";
 import RequireAuth from "./utils/RequireAuth";
 import {AuthContext} from "./context/AuthContext";
+import BlockAuth from "./utils/BlockAuth";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 function App() {
 
@@ -18,9 +21,16 @@ function App() {
         setClient(checkAuthentication());
     },[]);
 
-  return (
+    return (
     <Routes>
         <Route path="/" element={
+            <AuthContext.Provider value={client}>
+                <BlockAuth>
+                    <Login/>
+                </BlockAuth>
+            </AuthContext.Provider>
+        }/>
+        <Route path="/home" element={
             <AuthContext.Provider value={client}>
                 <RequireAuth>
                     <div>hello</div>

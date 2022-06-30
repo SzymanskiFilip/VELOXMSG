@@ -1,5 +1,6 @@
 import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
+import {Navigate} from "react-router-dom";
 
 function RequireAuth({children}: {children: JSX.Element}): JSX.Element{
     const context = useContext(AuthContext);
@@ -9,10 +10,7 @@ function RequireAuth({children}: {children: JSX.Element}): JSX.Element{
     }
 
     return(
-        <div>
-            <h1>No Access to this page</h1>
-            <a href="http://localhost:3000">Go back</a>
-        </div>
+        <Navigate to="/"/>
     )
 }
 

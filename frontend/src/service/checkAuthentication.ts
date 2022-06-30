@@ -3,7 +3,7 @@ import UserInterface from "../model/UserInterface";
 function checkAuthentication(): UserInterface{
     //request
     let username: string = "david";
-    let authenticated: boolean = true;
+    let authenticated: boolean = false;
 
     return {username,authenticated};
 }
