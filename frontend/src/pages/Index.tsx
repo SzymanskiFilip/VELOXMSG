@@ -1,4 +1,16 @@
-function Login(): JSX.Element{
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import LoginForm from "../components/login/LoginForm";
+
+function Index(): JSX.Element{
+
+    const navigation = useNavigate();
+    const [loginForm, setLoginForm] = useState<boolean>(false);
+
+    function authenticate(){
+        console.log("hello from login component")
+    }
+
     return(
         <div className="bg-black flex flex-col h-screen lg:flex-row">
 
@@ -20,13 +32,21 @@ function Login(): JSX.Element{
                 </div>
 
                 <p className="text-white text-center mt-4">If you already have an account</p>
-                <div className="flex flex-row items-center justify-center pb-12">
-                    <button className="text-black bg-white rounded-full px-12 py-2 mt-2 mb-2">Sign in</button>
-                </div>
+                {
+                    loginForm
+                    ?
+                    <LoginForm authenticate={authenticate}/>
+                        //TODO: fix passing function
+                    :
+                    <div className="flex flex-row items-center justify-center pb-12">
+                    <button onClick={() => setLoginForm(true)} className="text-black bg-white rounded-full px-12 py-2 mt-2 mb-2">Sign in</button>
+                    </div>
+                }
+
             </div>
 
         </div>
     );
 }
 
-export default Login;
+export default Index;

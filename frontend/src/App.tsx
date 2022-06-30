@@ -6,8 +6,7 @@ import checkAuthentication from "./service/checkAuthentication";
 import RequireAuth from "./utils/RequireAuth";
 import {AuthContext} from "./context/AuthContext";
 import BlockAuth from "./utils/BlockAuth";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Index from "./pages/Index";
 
 function App() {
 
@@ -26,10 +25,11 @@ function App() {
         <Route path="/" element={
             <AuthContext.Provider value={client}>
                 <BlockAuth>
-                    <Login/>
+                    <Index/>
                 </BlockAuth>
             </AuthContext.Provider>
         }/>
+
         <Route path="/home" element={
             <AuthContext.Provider value={client}>
                 <RequireAuth>
@@ -37,6 +37,8 @@ function App() {
                 </RequireAuth>
             </AuthContext.Provider>
         }/>
+
+
     </Routes>
   );
 }
