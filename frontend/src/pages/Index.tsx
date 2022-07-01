@@ -7,7 +7,7 @@ function Index(): JSX.Element{
     const navigation = useNavigate();
     const [loginForm, setLoginForm] = useState<boolean>(false);
 
-    function authenticate(){
+    function authenticate(): void{
         console.log("hello from login component")
     }
 
