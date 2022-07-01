@@ -35,8 +35,7 @@ function Index(): JSX.Element{
                 {
                     loginForm
                     ?
-                    <LoginForm authenticate={authenticate}/>
-                        //TODO: fix passing function
+                    <LoginForm />
                     :
                     <div className="flex flex-row items-center justify-center pb-12">
                     <button onClick={() => setLoginForm(true)} className="text-black bg-white rounded-full px-12 py-2 mt-2 mb-2">Sign in</button>
