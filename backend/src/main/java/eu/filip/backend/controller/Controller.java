@@ -1,11 +1,14 @@
 package eu.filip.backend.controller;
 
+import eu.filip.backend.model.AuthCheckData;
 import eu.filip.backend.model.AuthenticationResponse;
 import eu.filip.backend.model.LoginCredentials;
 import eu.filip.backend.service.UserDetailsServiceImpl;
 import eu.filip.backend.util.JwtUtil;
 import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -52,5 +55,19 @@ public class Controller {
         final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> checkAuthentication(@RequestBody String token){
+        try{
+            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil.extractUsername(token));
+            boolean status = jwtUtil.validateToken(token, userDetails);
+            if(status == true){
+                return ResponseEntity.ok().build();
+            }
+        } catch (SignatureException e){
+            System.out.println("TOKEN NOT VALID");
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 }
