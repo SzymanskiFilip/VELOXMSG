@@ -7,6 +7,7 @@ import RequireAuth from "./utils/RequireAuth";
 import {AuthContext} from "./context/AuthContext";
 import BlockAuth from "./utils/BlockAuth";
 import Index from "./pages/Index";
+import StateInterface from "./model/StateInterface";
 
 
 function App() {
@@ -16,6 +17,10 @@ function App() {
         authenticated: false
     });
 
+    const state: StateInterface = {
+      client, setClient
+    };
+
     useEffect(() => {
         console.log(checkAuthentication());
         setClient(checkAuthentication());
@@ -24,7 +29,7 @@ function App() {
     return (
     <Routes>
         <Route path="/" element={
-            <AuthContext.Provider value={client}>
+            <AuthContext.Provider value={state}>
                 <BlockAuth>
                     <Index/>
                 </BlockAuth>
@@ -32,7 +37,7 @@ function App() {
         }/>
 
         <Route path="/home" element={
-            <AuthContext.Provider value={client}>
+            <AuthContext.Provider value={state}>
                 <RequireAuth>
                     <div>hello</div>
                 </RequireAuth>

@@ -4,7 +4,7 @@ import {Navigate} from "react-router-dom";
 
 function BlockAuth({children}: {children: JSX.Element}): JSX.Element{
     const context = useContext(AuthContext);
-    if(context?.authenticated){
+    if(context?.client.authenticated){
         return <Navigate to={"/home"}/>
     }
     return children;

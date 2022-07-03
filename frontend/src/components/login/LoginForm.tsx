@@ -1,7 +1,9 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import LoginCredentials from "../../model/LoginCredentials";
 import Spinner from "./Spinner";
 import {useCookies} from "react-cookie";
+import {AuthContext} from "../../context/AuthContext";
+import UserInterface from "../../model/UserInterface";
 
 function LoginForm(): JSX.Element{
 
@@ -11,49 +13,54 @@ function LoginForm(): JSX.Element{
     });
     const [animationPlaying, setAnimationPlaying] = useState<boolean>(false);
     const [cookies, setCookie] = useCookies();
+    const [error, setError] = useState<string|null>(null);
+    const context = useContext(AuthContext);
+    let controller: AbortController = new AbortController();
+    let signal: AbortSignal = controller.signal;
 
     async function requestLogin(): Promise<void>{
         let JWT: string;
-        if(credentials.username.length > 2 && credentials.username.length > 2){
-            setAnimationPlaying(true);
 
-            fetch("http://localhost:8080/authenticate", {
-               method: "POST",
-               headers:{
-                   "Content-Type": "application/json"
-               },
-               body: JSON.stringify(credentials)
-            }).then(res => {
-                if(res.ok){
-                    return res.json();
-                } else {
-                    throw new Error(res.statusText);
-                }
-            }).then(res => {
-                console.log(res)
-                //TODO: Save JWT as cookie and set context user etc.
-                JWT = res.jwt;
-                setCookie("test", "test", {
-                    path: "/"
-                });
-            })
-        }
-
-        //get jwt token from input
-        //save in cookies
-        //set context to authenticated
+        setAnimationPlaying(true);
 
         setTimeout(() => {
             setAnimationPlaying(false);
-        }, 3000);
+            controller.abort();
+        }, 15000);
+
+        fetch("http://localhost:8080/authenticate", {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            signal: signal,
+            body: JSON.stringify(credentials)
+        }).then(res => {
+            if(res.ok){
+                return res.json();
+            } else if(res.status === 403){
+                setAnimationPlaying(false);
+                setError("Wrong Username or Password");
+            } else {
+                setError("An error ocured, please try later");
+                throw new Error(res.statusText);
+            }
+        }).then(res => {
+            JWT = res.jwt;
+            setCookie("JWT_TOKEN", `${JWT}`, {
+                path: "/"
+            });
+            context?.setClient({username: "", authenticated: true});
+        })
     }
 
     return(
         <>
             {
                 animationPlaying
-                ? <div className="flex flex-row items-center justify-center mt-8">
+                ? <div className="flex flex-col items-center justify-center mt-8">
                    <Spinner />
+                   <h1 className="text-white">Logging in, please wait...</h1>
                 </div>
                 :
                 <div className="flex flex-col items-center justify-center">
@@ -61,6 +68,9 @@ function LoginForm(): JSX.Element{
                     <input type="text" className="rounded-full p-2 outline-none" onChange={(e) => setCredentials({...credentials, username: e.target.value})}/>
                     <h1 className="text-white">Password</h1>
                     <input type="password" className="rounded-full p-2 outline-none" onChange={(e) => setCredentials({...credentials, password: e.target.value})}/>
+                    {
+                        <h1 className="text-red-600">{error}</h1>
+                    }
                     <button className="bg-white rounded-full p-2 mt-2 px-4" onClick={requestLogin}>Sign in</button>
                 </div>
             }

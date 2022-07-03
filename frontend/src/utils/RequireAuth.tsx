@@ -5,7 +5,7 @@ import {Navigate} from "react-router-dom";
 function RequireAuth({children}: {children: JSX.Element}): JSX.Element{
     const context = useContext(AuthContext);
 
-    if(context?.authenticated){
+    if(context?.client.authenticated){
         return children;
     }
 
