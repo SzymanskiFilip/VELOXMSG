@@ -8,6 +8,7 @@ import {AuthContext} from "./context/AuthContext";
 import BlockAuth from "./utils/BlockAuth";
 import Index from "./pages/Index";
 
+
 function App() {
 
     const [client, setClient] = useState<UserInterface>({
@@ -37,8 +38,6 @@ function App() {
                 </RequireAuth>
             </AuthContext.Provider>
         }/>
-
-
     </Routes>
   );
 }

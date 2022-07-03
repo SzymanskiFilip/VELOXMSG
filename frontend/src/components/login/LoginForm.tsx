@@ -1,6 +1,7 @@
 import {useState} from "react";
 import LoginCredentials from "../../model/LoginCredentials";
 import Spinner from "./Spinner";
+import {useCookies} from "react-cookie";
 
 function LoginForm(): JSX.Element{
 
@@ -9,8 +10,10 @@ function LoginForm(): JSX.Element{
         password: ""
     });
     const [animationPlaying, setAnimationPlaying] = useState<boolean>(false);
+    const [cookies, setCookie] = useCookies();
 
     async function requestLogin(): Promise<void>{
+        let JWT: string;
         if(credentials.username.length > 2 && credentials.username.length > 2){
             setAnimationPlaying(true);
 
@@ -28,6 +31,11 @@ function LoginForm(): JSX.Element{
                 }
             }).then(res => {
                 console.log(res)
+                //TODO: Save JWT as cookie and set context user etc.
+                JWT = res.jwt;
+                setCookie("test", "test", {
+                    path: "/"
+                });
             })
         }
 
