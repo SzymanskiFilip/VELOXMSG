@@ -10,12 +10,27 @@ function LoginForm(): JSX.Element{
     });
     const [animationPlaying, setAnimationPlaying] = useState<boolean>(false);
 
-    function requestLogin(): void{
+    async function requestLogin(): Promise<void>{
+        if(credentials.username.length > 2 && credentials.username.length > 2){
+            setAnimationPlaying(true);
 
-        console.log("hello")
-        console.log(credentials)
-        //if not empty
-        setAnimationPlaying(true);
+            fetch("http://localhost:8080/authenticate", {
+               method: "POST",
+               headers:{
+                   "Content-Type": "application/json"
+               },
+               body: JSON.stringify(credentials)
+            }).then(res => {
+                if(res.ok){
+                    return res.json();
+                } else {
+                    throw new Error(res.statusText);
+                }
+            }).then(res => {
+                console.log(res)
+            })
+        }
+
         //get jwt token from input
         //save in cookies
         //set context to authenticated
