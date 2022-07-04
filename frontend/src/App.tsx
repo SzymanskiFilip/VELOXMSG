@@ -8,7 +8,7 @@ import BlockAuth from "./utils/BlockAuth";
 import Index from "./pages/Index";
 import StateInterface from "./model/StateInterface";
 import {useCookies} from "react-cookie";
-
+import Home from "./pages/Home";
 
 function App() {
 
@@ -51,7 +51,7 @@ function App() {
         <Route path="/home" element={
             <AuthContext.Provider value={state}>
                 <RequireAuth>
-                    <div>hello</div>
+                    <Home />
                 </RequireAuth>
             </AuthContext.Provider>
         }/>

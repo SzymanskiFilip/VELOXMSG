@@ -34,3 +34,7 @@
 .body-text{
     overflow-wrap: break-word;
 }
+
+.height{
+    height: 0.05rem;
+}
