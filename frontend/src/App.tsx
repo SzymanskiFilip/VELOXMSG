@@ -2,29 +2,41 @@ import React, {useEffect} from 'react';
 import {Routes, Route} from "react-router-dom";
 import UserInterface from "./model/UserInterface";
 import {useState} from "react";
-import checkAuthentication from "./service/checkAuthentication";
 import RequireAuth from "./utils/RequireAuth";
 import {AuthContext} from "./context/AuthContext";
 import BlockAuth from "./utils/BlockAuth";
 import Index from "./pages/Index";
 import StateInterface from "./model/StateInterface";
+import {useCookies} from "react-cookie";
 
 
 function App() {
 
     const [client, setClient] = useState<UserInterface>({
-        username: '',
         authenticated: false
     });
-
+    const [cookies, setCookie] = useCookies();
     const state: StateInterface = {
       client, setClient
     };
 
     useEffect(() => {
-        console.log(checkAuthentication());
-        setClient(checkAuthentication());
-    },[]);
+        console.log(cookies.JWT_TOKEN)
+        if(cookies.JWT_TOKEN !== undefined){
+            fetch("http://localhost:8080/check", {
+                method: "POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body: cookies.JWT_TOKEN
+            })
+                .then(res => {
+                    if(res.status === 200){
+                        setClient({authenticated: true});
+                    }
+                })
+        }
+    }, []);
 
     return (
     <Routes>

@@ -1,9 +1,8 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import LoginCredentials from "../../model/LoginCredentials";
 import Spinner from "./Spinner";
 import {useCookies} from "react-cookie";
 import {AuthContext} from "../../context/AuthContext";
-import UserInterface from "../../model/UserInterface";
 
 function LoginForm(): JSX.Element{
 
@@ -17,6 +16,24 @@ function LoginForm(): JSX.Element{
     const context = useContext(AuthContext);
     let controller: AbortController = new AbortController();
     let signal: AbortSignal = controller.signal;
+
+    useEffect(() => {
+        console.log(cookies.JWT_TOKEN)
+        if(cookies.JWT_TOKEN !== undefined){
+            fetch("http://localhost:8080/check", {
+                method: "POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body: cookies.JWT_TOKEN
+            })
+                .then(res => {
+                    if(res.status === 200){
+                        context?.setClient({authenticated: true});
+                    }
+                })
+        }
+    }, []);
 
     async function requestLogin(): Promise<void>{
         let JWT: string;
@@ -50,7 +67,7 @@ function LoginForm(): JSX.Element{
             setCookie("JWT_TOKEN", `${JWT}`, {
                 path: "/"
             });
-            context?.setClient({username: "", authenticated: true});
+            context?.setClient({authenticated: true});
         })
     }
 

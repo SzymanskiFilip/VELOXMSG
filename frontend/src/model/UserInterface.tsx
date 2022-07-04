@@ -1,5 +1,4 @@
 interface UserInterface{
-    username: string;
     authenticated: boolean;
 }
 
