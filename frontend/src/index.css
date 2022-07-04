@@ -38,3 +38,17 @@
 .height{
     height: 0.05rem;
 }
+
+.slide{
+    position: absolute;
+    left: -100px;
+    width: 100px;
+    height: 100px;
+    background: blue;
+    transition: 1s;
+}
+
+.slide-pos{
+    transition: 1s;
+    left: 0;
+}
