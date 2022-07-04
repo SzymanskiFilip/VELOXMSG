@@ -65,7 +65,7 @@ public class Controller {
             if(status == true){
                 return ResponseEntity.ok().build();
             }
-        } catch (SignatureException e){
+        } catch (Exception e){
             System.out.println("TOKEN NOT VALID");
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
