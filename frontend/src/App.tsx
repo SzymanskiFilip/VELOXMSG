@@ -20,6 +20,7 @@ function App() {
       client, setClient
     };
 
+
     useEffect(() => {
         console.log(cookies.JWT_TOKEN)
         if(cookies.JWT_TOKEN !== undefined){

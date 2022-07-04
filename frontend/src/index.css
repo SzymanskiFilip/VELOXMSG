@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html{
+    height: 100%;
+}
+
 *{
     font-family: 'Merriweather Sans', sans-serif;
 }
@@ -41,11 +45,12 @@
 
 .slide{
     position: absolute;
-    left: -100px;
-    width: 100px;
-    height: 100px;
-    background: blue;
+    left: -300px;
+    width: 200px;
+    height: calc(100vh - 2.9rem);
+    overflow: hidden;
     transition: 1s;
+    @apply bg-neutral-800;
 }
 
 .slide-pos{

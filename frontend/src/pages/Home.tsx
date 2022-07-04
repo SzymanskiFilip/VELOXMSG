@@ -1,13 +1,17 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function Home(): JSX.Element{
-    //TODO: on the bottom a random chat button
-
     const [sidebar, setSidebar] = useState<boolean>(false);
     function sidebarHandler(){
         setSidebar(!sidebar);
         console.log(sidebar);
     }
+    let socket: WebSocket;
+
+    useEffect(() => {
+        socket = new WebSocket("ws://localhost:8080/ws");
+        console.log(socket);
+    }, []);
 
     return(
         <div>
@@ -21,10 +25,10 @@ function Home(): JSX.Element{
                 <h1 className="absolute left-1/2 transform -translate-x-1/2">VELOXMSG</h1>
             </nav>
 
-            <div className={sidebar ? "slide slide-pos" : "slide"}>
-                <h1>Contacts</h1>
-                <h1>Active Users</h1>
-                <h1>Random Chat</h1>
+            <div className={sidebar ? "slide slide-pos " : "slide"}>
+                <h1 className="text-white m-2">Contacts</h1>
+                <h1 className="text-white m-2">Active Users</h1>
+                <h1 className="text-white m-2">Random Chat</h1>
             </div>
         </div>
     );
