@@ -17,23 +17,6 @@ function LoginForm(): JSX.Element{
     let controller: AbortController = new AbortController();
     let signal: AbortSignal = controller.signal;
 
-    useEffect(() => {
-        console.log(cookies.JWT_TOKEN)
-        if(cookies.JWT_TOKEN !== undefined){
-            fetch("http://localhost:8080/check", {
-                method: "POST",
-                headers:{
-                    "Content-Type": "application/json"
-                },
-                body: cookies.JWT_TOKEN
-            })
-                .then(res => {
-                    if(res.status === 200){
-                        context?.setClient({authenticated: true});
-                    }
-                })
-        }
-    }, []);
 
     async function requestLogin(): Promise<void>{
         let JWT: string;
