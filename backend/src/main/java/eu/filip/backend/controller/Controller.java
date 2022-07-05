@@ -39,6 +39,9 @@ public class Controller {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginCredentials loginCredentials) throws Exception{
+
+        Thread.sleep(3000);
+
         System.out.println("LOGIN CREDENTIALS = " + loginCredentials.getUsername() + loginCredentials.getPassword());
         try{
             authenticationManager.authenticate(
