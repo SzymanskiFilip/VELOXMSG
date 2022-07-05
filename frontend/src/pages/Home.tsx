@@ -1,17 +1,30 @@
 import {useEffect, useState} from "react";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import {useCookies} from "react-cookie";;
 
 function Home(): JSX.Element{
     const [sidebar, setSidebar] = useState<boolean>(false);
+    const [cookies, setCookies] = useCookies();
     function sidebarHandler(){
         setSidebar(!sidebar);
         console.log(sidebar);
     }
-    let socket: WebSocket;
 
-    useEffect(() => {
-        socket = new WebSocket("ws://localhost:8080/ws");
-        console.log(socket);
-    }, []);
+    let socket = new SockJS("http://localhost:8080/stomp");
+    let client = Stomp.over(socket);
+
+    //handle connection
+    client.connect({"JWT_TOKEN": cookies.JWT_TOKEN}, frame => {
+        //subscribe to the /topi/messages endpoint (all messages here are beeing received)
+        client.subscribe("/topic/messages", payload => {
+            console.log(payload.body)
+        })
+    });
+
+    function sendMessage(){
+        client.send("/app/chat", {}, JSON.stringify("TEST MSG"));
+    }
 
     return(
         <div>
@@ -30,6 +43,8 @@ function Home(): JSX.Element{
                 <h1 className="text-white m-2">Active Users</h1>
                 <h1 className="text-white m-2">Random Chat</h1>
             </div>
+
+            <button onClick={() => sendMessage()}>SEND MESSAGE</button>
         </div>
     );
 }
