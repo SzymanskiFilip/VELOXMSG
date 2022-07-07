@@ -3,6 +3,8 @@ package eu.filip.backend.dto;
 public class MessageDto {
     private String message;
 
+    public MessageDto(){}
+
     public MessageDto(String message) {
         this.message = message;
     }

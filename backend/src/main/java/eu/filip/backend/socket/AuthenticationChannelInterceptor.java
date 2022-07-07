@@ -28,6 +28,9 @@ public class AuthenticationChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
+        //TODO: CHECK IF THE JWT CHECKING REALLY WORKS
+
         final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         assert accessor != null;
 
