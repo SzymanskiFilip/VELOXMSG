@@ -10,12 +10,15 @@ import java.util.ArrayList;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private final UserService userService;
+
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(username.equals("filip")){
-            return new User("filip", "1234", new ArrayList<>());
-        } else {
-            return null;
-        }
+        return userService.findUserByUsername(username);
     }
 }
