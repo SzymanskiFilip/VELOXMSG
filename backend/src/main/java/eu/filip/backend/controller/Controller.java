@@ -36,14 +36,6 @@ public class Controller {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private RoomRepository roomRepository;
-
-    @GetMapping("/test")
-    public List<Room> getRooms(){
-        return roomRepository.getRoomsForUser(2L);
-    }
-
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginCredentials loginCredentials) throws Exception{
 
