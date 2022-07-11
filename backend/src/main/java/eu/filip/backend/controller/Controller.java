@@ -1,8 +1,10 @@
 package eu.filip.backend.controller;
 
+import eu.filip.backend.entity.Room;
 import eu.filip.backend.model.AuthCheckData;
 import eu.filip.backend.model.AuthenticationResponse;
 import eu.filip.backend.model.LoginCredentials;
+import eu.filip.backend.repository.RoomRepository;
 import eu.filip.backend.service.UserDetailsServiceImpl;
 import eu.filip.backend.util.JwtUtil;
 import io.jsonwebtoken.Jwt;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class Controller {
 
@@ -32,9 +36,12 @@ public class Controller {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @GetMapping("/test")
+    public List<Room> getRooms(){
+        return roomRepository.getRoomsForUser(2L);
     }
 
     @PostMapping("/authenticate")

@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static eu.filip.backend.util.ConsoleColors.TEXT_GREEN;
+import static eu.filip.backend.util.ConsoleColors.TEXT_RESET;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -28,6 +31,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
+
+        System.out.println(TEXT_GREEN + "REQUEST CAME IN" + TEXT_RESET);
 
         String username = null;
         String jwt = null;
