@@ -57,3 +57,7 @@ html{
     transition: 1s;
     left: 0;
 }
+
+.sidebar-divider{
+    @apply w-full bg-yellow-200;
+}
