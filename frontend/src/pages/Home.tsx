@@ -14,20 +14,6 @@ function Home(): JSX.Element{
     let socket = new SockJS("http://localhost:8080/stomp");
     let client = Stomp.over(socket);
 
-    //handle connection
-    client.connect({"JWT_TOKEN": cookies.JWT_TOKEN}, frame => {
-        //subscribe to the /topi/messages endpoint (all messages here are beeing received)
-        client.subscribe("/topic/messages", payload => {
-            console.log("payload: ")
-            let msg = JSON.parse(payload.body)
-            console.log(msg.message)
-            //setMessages([...messages, ]);
-        })
-
-        client.subscribe("/user/topic/private-messages", payload => {
-            console.log("RESPONSE - " + payload.body)
-        })
-    });
 
     function sendMessage(){
         client.send("/app/chat", {}, JSON.stringify("hello"));
@@ -37,7 +23,7 @@ function Home(): JSX.Element{
         let data = {
             message: "hi private"
         }
-        client.send("/app/private/chat", {}, JSON.stringify(data));
+        //client.send("/app/private/chat", {}, JSON.stringify(data));
     }
 
     function sidebarHandler(){
@@ -59,6 +45,22 @@ function Home(): JSX.Element{
             })
     },[]);
 
+    useEffect(() => {
+        //handle connection
+        client.connect({"JWT_TOKEN": cookies.JWT_TOKEN}, frame => {
+            //subscribe to the /topi/messages endpoint (all messages here are beeing received)
+            client.subscribe("/topic/messages", payload => {
+                console.log("payload: ")
+                let msg = JSON.parse(payload.body)
+                console.log(msg.message)
+                setMessages([...messages, msg.message]);
+            })
+
+            client.subscribe("/user/topic/private-messages", payload => {
+                console.log("RESPONSE - " + payload.body)
+            })
+        });
+    }, []);
     return(
         <div>
             <nav className="bg-black text-white text-center font-bold flex flex-row items-center justify-between pt-4 pb-4">
