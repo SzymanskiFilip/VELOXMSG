@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import static eu.filip.backend.util.ConsoleColors.TEXT_GREEN;
 import static eu.filip.backend.util.ConsoleColors.TEXT_RESET;
@@ -32,7 +33,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
 
-        System.out.println(TEXT_GREEN + "REQUEST CAME IN" + TEXT_RESET);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(TEXT_GREEN + "REQUEST CAME IN" + TEXT_RESET + " " + localDateTime.getHour() + ":" + localDateTime.getMinute() + ":" + localDateTime.getSecond());
 
         String username = null;
         String jwt = null;
