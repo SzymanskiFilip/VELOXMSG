@@ -33,9 +33,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
 
-        LocalDateTime localDateTime = LocalDateTime.now();
-        System.out.println(TEXT_GREEN + "REQUEST CAME IN" + TEXT_RESET + " " + localDateTime.getHour() + ":" + localDateTime.getMinute() + ":" + localDateTime.getSecond());
-
         String username = null;
         String jwt = null;
 

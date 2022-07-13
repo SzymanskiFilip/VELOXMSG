@@ -35,6 +35,8 @@ public class CustomHandshakeInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         if(StompCommand.CONNECT.equals(accessor.getCommand())){
             System.out.println(TEXT_YELLOW + "CONNECTING" + TEXT_RESET);
+            String name = accessor.getFirstNativeHeader("JWT_TOKEN");
+            System.out.println(name);
         }
         return message;
     }
