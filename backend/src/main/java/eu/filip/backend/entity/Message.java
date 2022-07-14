@@ -1,21 +1,25 @@
-package eu.filip.backend.dto;
+package eu.filip.backend.entity;
 
-public class MessageDto {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "messages")
+public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long room_id;
-    private Long sender_id;
+    private Long user_id;
     private String message;
-    private boolean me;
 
-    public MessageDto(Long id, Long room_id, Long sender_id, String message, boolean me) {
+    public Message(Long id, Long room_id, Long user_id, String message) {
         this.id = id;
         this.room_id = room_id;
-        this.sender_id = sender_id;
+        this.user_id = user_id;
         this.message = message;
-        this.me = me;
     }
 
-    public MessageDto(){}
+    public Message(){}
 
     public Long getId() {
         return id;
@@ -33,12 +37,12 @@ public class MessageDto {
         this.room_id = room_id;
     }
 
-    public Long getSender_id() {
-        return sender_id;
+    public Long getUser_id() {
+        return user_id;
     }
 
-    public void setSender_id(Long sender_id) {
-        this.sender_id = sender_id;
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 
     public String getMessage() {
@@ -47,13 +51,5 @@ public class MessageDto {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public boolean isMe() {
-        return me;
-    }
-
-    public void setMe(boolean me) {
-        this.me = me;
     }
 }

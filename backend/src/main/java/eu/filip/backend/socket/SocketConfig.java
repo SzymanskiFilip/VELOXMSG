@@ -1,23 +1,24 @@
 package eu.filip.backend.socket;
 
-import org.springframework.context.annotation.Bean;
+import eu.filip.backend.socket.interceptor.CustomHandshakeInterceptor;
+import eu.filip.backend.socket.interceptor.MessageInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.server.HandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
 public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private CustomHandshakeInterceptor handshakeInterceptor;
+    private MessageInterceptor messageInterceptor;
 
-    public SocketConfig(CustomHandshakeInterceptor handshakeInterceptor) {
+    public SocketConfig(CustomHandshakeInterceptor handshakeInterceptor, MessageInterceptor messageInterceptor) {
         this.handshakeInterceptor = handshakeInterceptor;
+        this.messageInterceptor = messageInterceptor;
     }
 
     @Override

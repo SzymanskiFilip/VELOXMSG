@@ -1,4 +1,4 @@
-package eu.filip.backend.socket;
+package eu.filip.backend.socket.interceptor;
 
 import eu.filip.backend.entity.User;
 import eu.filip.backend.service.UserDetailsServiceImpl;
@@ -47,6 +47,6 @@ public class CustomHandshakeInterceptor implements ChannelInterceptor {
                 return null;
             }
         }
-        return null;
+        return message;
     }
 }
