@@ -4,26 +4,28 @@ import Stomp from "stompjs";
 import {useCookies} from "react-cookie";
 import ChatInterface from "../model/ChatInterface";
 import chatInterface from "../model/ChatInterface";
+import MessageInterface from "../model/MessageInterface";
+import ChatRow from "../components/chat/ChatRow";
+import ChatWindow from "../components/chat/ChatWindow";
 
 function Home(): JSX.Element{
     const [sidebar, setSidebar] = useState<boolean>(false);
     const [cookies, setCookies] = useCookies();
     const [chats, setChats] = useState<chatInterface[]>([]);
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<MessageInterface[]>([]);
 
     let socket = new SockJS("http://localhost:8080/stomp");
     let client = Stomp.over(socket);
 
 
     function sendMessage(){
-        client.send("/app/chat", {}, JSON.stringify("hello"));
+        client.send("/app/send/333", {}, "Hiii");
     }
 
     function sendPrivate(){
         let data = {
             message: "hi private"
         }
-        //client.send("/app/private/chat", {}, JSON.stringify(data));
     }
 
     function sidebarHandler(){
@@ -49,15 +51,8 @@ function Home(): JSX.Element{
         //handle connection
         client.connect({"JWT_TOKEN": cookies.JWT_TOKEN}, frame => {
             //subscribe to the /topi/messages endpoint (all messages here are beeing received)
-            client.subscribe("/topic/messages", payload => {
-                console.log("payload: ")
-                let msg = JSON.parse(payload.body)
-                console.log(msg.message)
-                setMessages([...messages, msg.message]);
-            })
+            client.subscribe("/topic/333", payload => {
 
-            client.subscribe("/user/topic/private-messages", payload => {
-                console.log("RESPONSE - " + payload.body)
             })
         });
     }, []);
@@ -91,14 +86,11 @@ function Home(): JSX.Element{
                 <div className="sidebar-divider height"></div>
             </div>
 
-            <button onClick={() => sendMessage()}>SEND MESSAGE</button>
-            <br/>
-            <button onClick={() => sendPrivate()}>SEND PRIVATE MESSAGE</button>
-            {
-                messages.map(m => {
-                    return <p key={Math.random()}>{m}</p>
-                })
-            }
+            <div className="w-screen flex flex-col items-center justify-center mt-8">
+                <ChatWindow/>
+            </div>
+
+
         </div>
     );
 }

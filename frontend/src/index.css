@@ -61,3 +61,12 @@ html{
 .sidebar-divider{
     @apply w-full bg-yellow-200;
 }
+
+.chat-window{
+    height: 600px;
+}
+
+.message{
+    padding: 5px;
+    border-radius: 15%;
+}

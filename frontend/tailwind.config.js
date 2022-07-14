@@ -4,6 +4,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    heights: {
+      'chat': '600px'
+    },
   },
   plugins: [],
 }
