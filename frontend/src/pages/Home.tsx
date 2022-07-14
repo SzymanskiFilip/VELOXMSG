@@ -13,25 +13,11 @@ function Home(): JSX.Element{
     const [cookies, setCookies] = useCookies();
     const [chats, setChats] = useState<chatInterface[]>([]);
     const [messages, setMessages] = useState<MessageInterface[]>([]);
+    const [chat, setChat] = useState<number>();
+    const [chatData, setChatData] = useState();
 
     let socket = new SockJS("http://localhost:8080/stomp");
     let client = Stomp.over(socket);
-
-
-    function sendMessage(){
-        client.send("/app/send/333", {}, "Hiii");
-    }
-
-    function sendPrivate(){
-        let data = {
-            message: "hi private"
-        }
-    }
-
-    function sidebarHandler(){
-        setSidebar(!sidebar);
-        console.log(sidebar);
-    }
 
     useEffect(() => {
         fetch("http://localhost:8080/get-chats", {
@@ -47,6 +33,7 @@ function Home(): JSX.Element{
             })
     },[]);
 
+    /*
     useEffect(() => {
         //handle connection
         client.connect({"JWT_TOKEN": cookies.JWT_TOKEN}, frame => {
@@ -56,10 +43,20 @@ function Home(): JSX.Element{
             })
         });
     }, []);
+     */
+
+    function chatHandler(id: number){
+        setChat(id);
+        console.log(chat);
+
+        //setChatData
+
+    }
+
     return(
         <div>
             <nav className="bg-black text-white text-center font-bold flex flex-row items-center justify-between pt-4 pb-4">
-                <div className="w-6 ml-4 hover:cursor-pointer" onClick={sidebarHandler}>
+                <div className="w-6 ml-4 hover:cursor-pointer" onClick={() => setSidebar(!sidebar)}>
                     <div className="bg-white w-6 mb-1 height"></div>
                     <div className="bg-white w-6 mb-1 height"></div>
                     <div className="bg-white w-6 mb-1 height"></div>
@@ -74,7 +71,7 @@ function Home(): JSX.Element{
                     <div className="h-1/3">
                         {
                             chats.map(chat => {
-                                return <h1 className="text-white m-2" key={chat.id}>{chat.name}</h1>
+                                return <h1 onClick={() => chatHandler(chat.id)} className="text-white m-2 hover:cursor-pointer unselectable" key={chat.id}>{chat.name}</h1>
                             })
                         }
                     </div>
