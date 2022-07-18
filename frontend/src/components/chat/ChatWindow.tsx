@@ -1,24 +1,33 @@
 import ChatRow from "./ChatRow";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
+import ChatMessageData from "../../model/ChatMessageData";
+import {useCookies} from "react-cookie";
 
 interface chatWindowRequirement{
-    id?: number
+    id: number;
 };
 
 function ChatWindow(data: chatWindowRequirement): JSX.Element {
 
     const bottomRef = useRef<null | HTMLDivElement>(null);
+    const [messages, setMessages] = useState<ChatMessageData[]>([]);
+    const [cookies, setCookies] = useCookies();
 
-    const messages = [
-        {sender: "Dave", body: "hello", me: false},
-        {sender: "Filip", body: "Hisssssssssssssssssssssss Hisssssssssssssssssssssss Hisssssssssssssssssssssss", me: true},
-        {sender: "Dave", body: "hello", me: false},
-        {sender: "Filip", body: "what's up?", me: true},
-        {sender: "Dave", body: "hello", me: false},
-        {sender: "Filip", body: "Hi", me: true},
-        {sender: "Dave", body: "hello", me: false},
-        {sender: "Filip", body: "what's up?", me: true}
-    ];
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/chat/${data.id}`, {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${cookies.JWT_TOKEN}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                setMessages(res)
+                console.log(messages)
+            })
+    },[]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({behavior: "smooth"});
@@ -30,7 +39,7 @@ function ChatWindow(data: chatWindowRequirement): JSX.Element {
             <div className="bg-green-200 rounded border-2 border-black h-4/5 overflow-y-scroll">
                 {
                     messages.map(m => {
-                        return <ChatRow data={m} key={Math.random()}/>
+                        return <ChatRow id={m.id} room_id={m.room_id} sender_id={m.sender_id} sender_name={m.sender_name} message={m.message} me={m.me}/>
                     })
                 }
                 <div ref={bottomRef}></div>
