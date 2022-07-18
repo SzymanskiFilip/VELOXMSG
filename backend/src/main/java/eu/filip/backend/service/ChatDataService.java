@@ -55,6 +55,7 @@ public class ChatDataService {
                         message.getId(),
                         message.getRoom_id(),
                         message.getUser_id(),
+                        "SENDER NAME",
                         message.getMessage(),
                         me
                 ));

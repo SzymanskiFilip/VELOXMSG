@@ -4,18 +4,18 @@ public class MessageDto {
     private Long id;
     private Long room_id;
     private Long sender_id;
+    private String sender_name;
     private String message;
     private boolean me;
 
-    public MessageDto(Long id, Long room_id, Long sender_id, String message, boolean me) {
+    public MessageDto(Long id, Long room_id, Long sender_id, String sender_name, String message, boolean me) {
         this.id = id;
         this.room_id = room_id;
         this.sender_id = sender_id;
+        this.sender_name = sender_name;
         this.message = message;
         this.me = me;
     }
-
-    public MessageDto(){}
 
     public Long getId() {
         return id;
@@ -39,6 +39,14 @@ public class MessageDto {
 
     public void setSender_id(Long sender_id) {
         this.sender_id = sender_id;
+    }
+
+    public String getSender_name() {
+        return sender_name;
+    }
+
+    public void setSender_name(String sender_name) {
+        this.sender_name = sender_name;
     }
 
     public String getMessage() {
