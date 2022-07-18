@@ -16,7 +16,7 @@ function ChatRow({data}: ChatRowData) : JSX.Element{
                 <p>{data.sender}</p>
             </div>
             <div className={data.me ? "flex flex-row justify-end" : "flex flex-row"}>
-                <p className="bg-blue-200 message">{data.body}</p>
+                <p className="bg-blue-200 message font-light">{data.body}</p>
             </div>
         </div>
     )

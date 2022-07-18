@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {MouseEventHandler, useEffect, useState} from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import {useCookies} from "react-cookie";
@@ -20,6 +20,7 @@ function Home(): JSX.Element{
     let client = Stomp.over(socket);
 
     useEffect(() => {
+        //Getting chat list
         fetch("http://localhost:8080/get-chats", {
             method: "GET",
             headers: {
@@ -31,6 +32,10 @@ function Home(): JSX.Element{
             .then(res => {
                 setChats(res)
             })
+    },[]);
+
+    useEffect(() => {
+        setChat(cookies.last_chat_open);
     },[]);
 
     /*
@@ -46,12 +51,12 @@ function Home(): JSX.Element{
      */
 
     function chatHandler(id: number){
+        setCookies("last_chat_open", id);
         setChat(id);
-        console.log(chat);
-
-        //setChatData
-
+        console.log(id);
     }
+
+
 
     return(
         <div>
@@ -84,7 +89,13 @@ function Home(): JSX.Element{
             </div>
 
             <div className="w-screen flex flex-col items-center justify-center mt-8">
-                <ChatWindow/>
+                {
+                    chat
+                    ?
+                    <ChatWindow id={chat}/>
+                    :
+                    <></>
+                }
             </div>
 
 

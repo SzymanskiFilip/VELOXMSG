@@ -1,13 +1,17 @@
 import ChatRow from "./ChatRow";
 import {useEffect, useRef} from "react";
 
-function ChatWindow(): JSX.Element {
+interface chatWindowRequirement{
+    id?: number
+};
+
+function ChatWindow(data: chatWindowRequirement): JSX.Element {
 
     const bottomRef = useRef<null | HTMLDivElement>(null);
 
     const messages = [
         {sender: "Dave", body: "hello", me: false},
-        {sender: "Filip", body: "Hi", me: true},
+        {sender: "Filip", body: "Hisssssssssssssssssssssss Hisssssssssssssssssssssss Hisssssssssssssssssssssss", me: true},
         {sender: "Dave", body: "hello", me: false},
         {sender: "Filip", body: "what's up?", me: true},
         {sender: "Dave", body: "hello", me: false},
@@ -26,7 +30,7 @@ function ChatWindow(): JSX.Element {
             <div className="bg-green-200 rounded border-2 border-black h-4/5 overflow-y-scroll">
                 {
                     messages.map(m => {
-                        return <ChatRow data={m}/>
+                        return <ChatRow data={m} key={Math.random()}/>
                     })
                 }
                 <div ref={bottomRef}></div>
