@@ -38,17 +38,15 @@ function Home(): JSX.Element{
     },[]);
 
 
-    /*
     useEffect(() => {
         //handle connection
         client.connect({"JWT_TOKEN": cookies.JWT_TOKEN}, frame => {
             //subscribe to the /topi/messages endpoint (all messages here are beeing received)
-            client.subscribe("/topic/333", payload => {
+            client.subscribe("/topic/1/1", payload => {
 
             })
         });
     }, []);
-     */
 
     function chatHandler(id: number){
         setCookies("last_chat_open", id);
@@ -65,10 +63,19 @@ function Home(): JSX.Element{
             .then(res => {
                 console.log(res)
                 setChatMessages(res)
-            })
+       });
+
     }
 
+    function sendMessageToCurrentChat(){
 
+        const message = {
+            sender_id: 1,
+            message: "hello testing the app!"
+        }
+
+        client.send(`/topic/1/1`, {}, JSON.stringify(message));
+    }
 
     return(
         <div>
@@ -102,7 +109,11 @@ function Home(): JSX.Element{
 
             <div className="w-screen flex flex-col items-center justify-center mt-8">
                 {
-                    <ChatWindow messages={chatMessages}/>
+                    chat
+                    ?
+                    <ChatWindow messages={chatMessages} sendFunction={sendMessageToCurrentChat}/>
+                    :
+                    <></>
                 }
             </div>
 

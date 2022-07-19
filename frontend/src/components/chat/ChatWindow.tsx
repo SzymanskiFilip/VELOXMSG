@@ -3,18 +3,19 @@ import {useEffect, useRef, useState} from "react";
 import ChatMessageData from "../../model/ChatMessageData";
 import {useCookies} from "react-cookie";
 
-interface CWProps{
-    messages: ChatMessageData[]
-}
+    interface CWProps{
+        messages: ChatMessageData[],
+        sendFunction(): void;
+    }
 
-function ChatWindow(messages: CWProps): JSX.Element {
-    const bottomRef = useRef<null | HTMLDivElement>(null);
+    function ChatWindow(messages: CWProps): JSX.Element {
+        const bottomRef = useRef<null | HTMLDivElement>(null);
 
-    console.log(messages)
+        console.log(messages)
 
-    useEffect(() => {
-        bottomRef.current?.scrollIntoView({behavior: "smooth"});
-    }, []);
+        useEffect(() => {
+            bottomRef.current?.scrollIntoView({behavior: "smooth"});
+        }, []);
 
     return (
         <div className="w-screen sm:w-2/3 chat-window">
@@ -29,7 +30,7 @@ function ChatWindow(messages: CWProps): JSX.Element {
             </div>
             <div className="flex flex-row items-center justify-between mr-2 ml-2">
                 <input type="text" className="outline-none border-2 w-full font-light"/>
-                <button>Send</button>
+                <button onClick={messages.sendFunction}>Send</button>
             </div>
         </div>
     )
