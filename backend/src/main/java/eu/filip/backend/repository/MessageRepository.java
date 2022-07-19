@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MessageReposiroty extends CrudRepository<Message, Long> {
+public interface MessageRepository extends CrudRepository<Message, Long> {
 
     @Query(nativeQuery = true, value = "select * from messages where room_id = ?1")
     Optional<List<Message>> findMessagesFromChatId(Long chatId);
