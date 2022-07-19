@@ -3,31 +3,14 @@ import {useEffect, useRef, useState} from "react";
 import ChatMessageData from "../../model/ChatMessageData";
 import {useCookies} from "react-cookie";
 
-interface chatWindowRequirement{
-    id: number;
-};
+interface CWProps{
+    messages: ChatMessageData[]
+}
 
-function ChatWindow(data: chatWindowRequirement): JSX.Element {
-
+function ChatWindow(messages: CWProps): JSX.Element {
     const bottomRef = useRef<null | HTMLDivElement>(null);
-    const [messages, setMessages] = useState<ChatMessageData[]>([]);
-    const [cookies, setCookies] = useCookies();
 
-
-    useEffect(() => {
-        fetch(`http://localhost:8080/chat/${data.id}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${cookies.JWT_TOKEN}`
-            }
-        })
-            .then(res => res.json())
-            .then(res => {
-                setMessages(res)
-                console.log(messages)
-            })
-    },[]);
+    console.log(messages)
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({behavior: "smooth"});
@@ -38,8 +21,8 @@ function ChatWindow(data: chatWindowRequirement): JSX.Element {
             <h1 className="text-center">First Chat Room</h1>
             <div className="bg-green-200 rounded border-2 border-black h-4/5 overflow-y-scroll">
                 {
-                    messages.map(m => {
-                        return <ChatRow id={m.id} room_id={m.room_id} sender_id={m.sender_id} sender_name={m.sender_name} message={m.message} me={m.me}/>
+                    messages.messages.map(m => {
+                        return <ChatRow key={m.id} id={m.id} room_id={m.room_id} sender_id={m.sender_id} sender_name={m.sender_name} message={m.message} me={m.me}/>
                     })
                 }
                 <div ref={bottomRef}></div>

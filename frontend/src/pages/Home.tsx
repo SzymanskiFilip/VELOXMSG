@@ -7,15 +7,14 @@ import chatInterface from "../model/ChatInterface";
 import MessageInterface from "../model/MessageInterface";
 import ChatRow from "../components/chat/ChatRow";
 import ChatWindow from "../components/chat/ChatWindow";
+import ChatMessageData from "../model/ChatMessageData";
 
 function Home(): JSX.Element{
     const [sidebar, setSidebar] = useState<boolean>(false);
     const [cookies, setCookies] = useCookies();
     const [chats, setChats] = useState<chatInterface[]>([]);
-    const [messages, setMessages] = useState<MessageInterface[]>([]);
     const [chat, setChat] = useState<number>();
-    const [chatData, setChatData] = useState();
-
+    const [chatMessages, setChatMessages] = useState<ChatMessageData[]>([]);
     let socket = new SockJS("http://localhost:8080/stomp");
     let client = Stomp.over(socket);
 
@@ -38,6 +37,7 @@ function Home(): JSX.Element{
         setChat(cookies.last_chat_open);
     },[]);
 
+
     /*
     useEffect(() => {
         //handle connection
@@ -53,7 +53,19 @@ function Home(): JSX.Element{
     function chatHandler(id: number){
         setCookies("last_chat_open", id);
         setChat(id);
-        console.log(id);
+        console.log("getting messages from: " + id)
+
+        fetch(`http://localhost:8080/chat/${id}`, {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${cookies.JWT_TOKEN}`
+            }
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res)
+                setChatMessages(res)
+            })
     }
 
 
@@ -90,11 +102,7 @@ function Home(): JSX.Element{
 
             <div className="w-screen flex flex-col items-center justify-center mt-8">
                 {
-                    chat
-                    ?
-                    <ChatWindow id={chat}/>
-                    :
-                    <></>
+                    <ChatWindow messages={chatMessages}/>
                 }
             </div>
 
